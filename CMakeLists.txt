@@ -13,8 +13,14 @@ include_directories(
 add_library(
 	DictzipQuery
 	SHARED
+		src/util/base64.cc
 		src/istream/stream.cc
 		src/istream/buffer.cc
+)
+
+target_link_libraries(
+	DictzipQuery
+		z
 )
 
 add_executable(
@@ -25,7 +31,6 @@ add_executable(
 target_link_libraries(
 	example
 		DictzipQuery
-		z
 )
 
 install(
