@@ -3,7 +3,7 @@ project(DictzipQuery)
 
 set(
 	CMAKE_CXX_FLAGS
-	"-std=c++0x -W -Wall -Wextra -Winline -pedantic"
+	"-std=c++17 -W -Wall -Wextra -Winline -pedantic"
 )
 
 include_directories(

@@ -168,27 +168,27 @@ int IstreamBuf::underflow() {
 // From C++ annotations 8.1.0~pre1, chapter 23.
 std::streamsize IstreamBuf::xsgetn(char *dest, std::streamsize n) {
 	int nread = 0;
-	
+
 	while ( n ) {
 		if ( !this->in_avail() ) {
 			if ( this->underflow() == EOF ) {
 				break;
 			}
 		}
-		
+
 		int avail = this->in_avail();
-		
+
 		if (avail > n) {
 			avail = n;
 		}
-		
+
 		std::memcpy(dest + nread, gptr(), avail);
 		this->gbump(avail);
-		
+
 		nread += avail;
 		n     -= avail;
 	}
-	
+
 	return nread;
 }
 

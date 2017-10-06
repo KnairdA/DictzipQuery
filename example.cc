@@ -4,19 +4,24 @@
 #include <string>
 #include <iostream>
 
-int main() {
-	dictzip::Istream stream("gcide.dict.dz");
+std::string get(const std::string& path, std::size_t offset, std::size_t length) {
+	dictzip::Istream stream(path.c_str());
 
+	std::string result;
+	result.resize(length);
+
+	stream.seekg(offset);
+	stream.read(result.data(), length);
+
+	return result;
+}
+
+int main() {
 	// Decode location of _Accession_
+	//     `gcide.index[1089]: "Accession	8Aw	Wt"
 	const std::size_t offset = dictzip::base64_decode("8Aw");
 	const std::size_t length = dictzip::base64_decode("Wt");
 
 	// Print the GCIDE definition of _Accession_
-	std::string data;
-	data.reserve(length);
-
-	stream.seekg(offset);
-	stream.read(const_cast<char*>(data.data()), length);
-
-	std::cout << data.c_str() << std::endl;
+	std::cout << get("gcide.dict.dz", offset, length) << std::endl;
 }
