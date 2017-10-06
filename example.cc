@@ -1,5 +1,6 @@
 #include "istream/stream.h"
 #include "util/base64.h"
+#include "util/query.h"
 
 #include <string>
 #include <iostream>
@@ -17,10 +18,13 @@ std::string get(const std::string& path, std::size_t offset, std::size_t length)
 }
 
 int main() {
+	// Get location of _Accession_
+	const std::string line = dictzip::get_line_starting_with("gcide.index", "Accession");
+
 	// Decode location of _Accession_
 	//     `gcide.index[1089]: "Accession	8Aw	Wt"
-	const std::size_t offset = dictzip::base64_decode("8Aw");
-	const std::size_t length = dictzip::base64_decode("Wt");
+	const std::size_t offset = dictzip::base64_decode(dictzip::get_encoded_offset(line));
+	const std::size_t length = dictzip::base64_decode(dictzip::get_encoded_length(line));
 
 	// Print the GCIDE definition of _Accession_
 	std::cout << get("gcide.dict.dz", offset, length) << std::endl;

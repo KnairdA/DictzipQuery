@@ -20,7 +20,7 @@ void IstreamBuf::readChunk(long n) {
 	
 	std::fseek(dictzip_file_, data_offset_ + chunkN.offset, SEEK_SET);
 
-	if ( fread(zBuf, 1, chunkN.size, dictzip_file_) != chunkN.size ) {
+	if ( std::fread(zBuf, 1, chunkN.size, dictzip_file_) != chunkN.size ) {
 		throw std::runtime_error("Could not read dictzip chunk.");
 	}
 

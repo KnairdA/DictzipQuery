@@ -14,6 +14,7 @@ add_library(
 	DictzipQuery
 	SHARED
 		src/util/base64.cc
+		src/util/query.cc
 		src/istream/stream.cc
 		src/istream/buffer.cc
 )
