@@ -15,6 +15,7 @@ std::vector<std::string> get_lines_starting_with(
 		return std::vector<std::string>{};
 	}
 
+
 	posix_fadvise(fileno(file), 0, 0, 1);  // FDADVICE_SEQUENTIAL
 
 	std::vector<std::string> result;
