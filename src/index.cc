@@ -5,7 +5,6 @@
 
 #include <algorithm>
 
-
 namespace dictzip {
 
 IndexFile::Entry parse_from_line(const std::string& line) {
@@ -13,8 +12,11 @@ IndexFile::Entry parse_from_line(const std::string& line) {
 	const std::size_t end   = line.find_last_of('\t');
 
 	return IndexFile::Entry(
+		// word
 		line.substr(0, start),
+		// offset
 		base64_decode(line.substr(start + 1, end - (start + 1))),
+		// length
 		base64_decode(line.substr(end + 1)));
 }
 
