@@ -15,12 +15,12 @@ std::vector<std::string> get_lines_starting_with(
 		return std::vector<std::string>{};
 	}
 
-
 	posix_fadvise(fileno(file), 0, 0, 1);  // FDADVICE_SEQUENTIAL
 
 	std::vector<std::string> result;
 	char buffer[16*1024 + 1];
 	char* start_of_match = nullptr;
+	std::string overlap;
 
 	while ( std::size_t n = std::fread(buffer,
 	                                   sizeof(char),
@@ -30,13 +30,23 @@ std::vector<std::string> get_lines_starting_with(
 			  (p = static_cast<char*>(std::memchr(p, '\n', (buffer + n) - p)));
 			  ++p ) {
 			if ( start_of_match != nullptr ) {
-				result.emplace_back(start_of_match, p - start_of_match);
-				start_of_match = nullptr;
+				if ( overlap.empty() ) {
+					result.emplace_back(start_of_match, p - start_of_match);
+					start_of_match = nullptr;
+				} else {
+					result.emplace_back(overlap.append(buffer, p - buffer));
+					start_of_match = nullptr;
+					overlap.clear();
+				}
 			}
 
 			if ( std::strncmp(substring.c_str(), p+1, substring.size()) == 0 ) {
 				start_of_match = p+1;
 			}
+		}
+
+		if ( start_of_match != nullptr ) {
+			overlap = std::string(start_of_match, (buffer + n) - start_of_match);
 		}
 	}
 
